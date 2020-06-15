@@ -1,0 +1,9 @@
+{
+  "name": "pomodoro-js",
+  "version": "1.0.0",
+  "description": "Simple Pomodoro Timer page built with Javascript",
+  "main": "index.js",
+  "repository": "git@github.com:jessicacarneiro/pomodoro-js.git",
+  "author": "Jéssica Carneiro <jessicacarneiro@dcc.ufmg.br>",
+  "license": "MIT"
+}
