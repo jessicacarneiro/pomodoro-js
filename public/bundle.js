@@ -93,7 +93,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("class App {\n  constructor() {\n    this.buttonEl = document.getElementById('start-pomodoro');\n    this.registerHandlers();\n  }\n\n  registerHandlers() {\n    this.buttonEl.onclick = event => this.toggleButton();\n  }\n\n  toggleButton() {\n    if (this.buttonEl.innerHTML === \"Start\") {\n      this.buttonEl.innerHTML = \"Stop\";\n    } else {\n      this.buttonEl.innerHTML = \"Start\";\n    }\n  }\n\n}\n\nnew App();\n\n//# sourceURL=webpack:///./src/main.js?");
+eval("class App {\n  constructor() {\n    this.workTime = 25;\n\n    this.delay = () => new Promise(resolve => setTimeout(resolve, 1000));\n\n    this.buttonEl = document.getElementById('start-pomodoro');\n    this.spanEl = document.getElementById('time-left');\n    this.registerHandlers();\n    this.render();\n  }\n\n  registerHandlers() {\n    this.buttonEl.onclick = event => this.toggleButton();\n  }\n\n  toggleButton() {\n    if (this.buttonEl.innerHTML === \"Start\") {\n      this.buttonEl.innerHTML = \"Stop\";\n      this.startTimer();\n    } else {\n      this.buttonEl.innerHTML = \"Start\";\n    }\n  }\n\n  resetTimer() {\n    this.workTime = 25;\n    this.render();\n  }\n\n  decreaseTime() {\n    if (this.workTime > 0) {\n      this.workTime--;\n    }\n  }\n\n  async startTimer() {\n    console.log('Starting timer!');\n\n    while (this.workTime > 0) {\n      await this.delay();\n      this.decreaseTime();\n      console.log(this.workTime);\n      this.render();\n    }\n\n    alert('Time is up!');\n    this.resetTimer();\n  }\n\n  render() {\n    this.spanEl.innerHTML = this.workTime;\n  }\n\n}\n\nconst app = new App();\n\n//# sourceURL=webpack:///./src/main.js?");
 
 /***/ })
 
