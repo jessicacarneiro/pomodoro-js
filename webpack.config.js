@@ -5,8 +5,7 @@ module.exports = {
         filename: 'bundle.js'
     },
     devServer: {
-        contentBase: __dirname + '/public',
-        publicPath: '/assets/'
+        contentBase: __dirname + '/public'
     },
     module: {
         rules: [

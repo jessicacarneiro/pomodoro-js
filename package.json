@@ -16,7 +16,7 @@
     "webpack-dev-server": "^3.11.0"
   },
   "scripts": {
-    "dev": "webpack-dev-server --mode=development -w",
+    "dev": "webpack --mode=development -w",
     "build": "webpack --mode=production"
   }
 }

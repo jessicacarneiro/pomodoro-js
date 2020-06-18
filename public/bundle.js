@@ -93,7 +93,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("console.log('It works!');\n\n//# sourceURL=webpack:///./src/main.js?");
+eval("class App {\n  constructor() {\n    this.buttonEl = document.getElementById('start-pomodoro');\n    this.registerHandlers();\n  }\n\n  registerHandlers() {\n    this.buttonEl.onclick = event => this.toggleButton();\n  }\n\n  toggleButton() {\n    if (this.buttonEl.innerHTML === \"Start\") {\n      this.buttonEl.innerHTML = \"Stop\";\n    } else {\n      this.buttonEl.innerHTML = \"Start\";\n    }\n  }\n\n}\n\nnew App();\n\n//# sourceURL=webpack:///./src/main.js?");
 
 /***/ })
 
