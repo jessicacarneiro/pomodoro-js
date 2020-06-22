@@ -3,7 +3,7 @@ class App {
         this.workTime = 25;
         this.isTimerRunning = false;
 
-        this.delay = () => new Promise(resolve => setTimeout(resolve, 1000));
+        this.delay = () => new Promise(resolve => setTimeout(resolve, 60*1000));
 
         this.startButtonEl = document.getElementById('start-pomodoro');
         this.stopButtonEl = document.getElementById('stop-pomodoro');
