@@ -4,7 +4,8 @@ class App {
 
         this.delay = () => new Promise(resolve => setTimeout(resolve, 60*1000));
 
-        this.buttonEl = document.getElementById('start-pomodoro');
+        this.startButtonEl = document.getElementById('start-pomodoro');
+        this.stopButtonEl = document.getElementById('stop-pomodoro');
         this.spanEl = document.getElementById('time-left');
 
         this.registerHandlers();
@@ -12,17 +13,8 @@ class App {
     }
 
     registerHandlers() {
-        this.buttonEl.onclick = event => this.toggleButton();
-    }
-
-    toggleButton() {
-        if (this.buttonEl.innerHTML === "Start") {
-            this.buttonEl.innerHTML = "Stop";
-            this.startTimer();
-        }
-        else {
-            this.buttonEl.innerHTML = "Start";
-        }
+        this.startButtonEl.onclick = event => this.startTimer();
+        this.stopButtonEl.onclick = event => this.stopTimer();
     }
 
     resetTimer() {
@@ -39,6 +31,9 @@ class App {
     async startTimer() {
         console.log('Starting timer!');
 
+        this.startButtonEl.style.display = 'none';
+        this.stopButtonEl.style.display = 'inline-block';
+
         while (this.workTime > 0) {
             await this.delay();
             this.decreaseTime();
@@ -47,6 +42,13 @@ class App {
 
         alert('Time is up!');
         this.resetTimer();
+    }
+
+    stopTimer() {
+        console.log('Stop timer!');
+
+        this.stopButtonEl.style.display = 'none';
+        this.startButtonEl.style.display = 'inline-block';
     }
 
     render() {
