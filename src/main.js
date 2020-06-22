@@ -1,13 +1,15 @@
 class App {
     constructor() {
-        this.workTime = 25;
+        this.workTimeMin = 25;
+        this.workTimeSec = 0;
         this.isTimerRunning = false;
 
-        this.delay = () => new Promise(resolve => setTimeout(resolve, 60*1000));
+        this.delay = () => new Promise(resolve => setTimeout(resolve, 996));
 
         this.startButtonEl = document.getElementById('start-pomodoro');
         this.stopButtonEl = document.getElementById('stop-pomodoro');
-        this.spanEl = document.getElementById('time-left');
+        this.spanMinEl = document.getElementById('time-left-min');
+        this.spanSecEl = document.getElementById('time-left-sec');
 
         this.registerHandlers();
         this.render();
@@ -30,31 +32,43 @@ class App {
     }
 
     resetTimer() {
-        this.workTime = 25;
+        this.workTimeMin = 25;
         this.render();
     }
 
+    timeIsUp() {
+        return this.workTimeMin === 0 && this.workTimeSec === 0;
+    }
+
     decreaseTime() {
-        if (this.workTime > 0) {
-            this.workTime--;
+        if (this.workTimeSec > 0) {
+            this.workTimeSec--;
+            this.renderSeconds();
+        }
+        else {
+            if (this.timeIsUp()) {
+                this.isTimerRunning = false;
+                return;
+            }
+
+            this.workTimeMin--;
+            this.workTimeSec = 59;
+            this.render();
         }
     }
 
     async startTimer() {
-        console.log('Starting timer!');
-
         this.startButtonEl.style.display = 'none';
         this.stopButtonEl.style.display = 'inline-block';
 
         this.isTimerRunning = true;
 
-        while (this.workTime > 0 && this.isTimerRunning) {
+        while (this.isTimerRunning) {
             await this.delay();
             this.decreaseTime();
-            this.render();
         }
 
-        if (this.workTime === 0) {
+        if (this.workTimeMin === 0) {
             alert('Time is up!');
             this.resetTimer();
             this.toggleButton();
@@ -62,15 +76,21 @@ class App {
     }
 
     stopTimer() {
-        console.log('Stopping timer!');
-
         this.isTimerRunning = false;
-
         this.toggleButton();
     }
 
+    renderMinutes() {
+        this.spanMinEl.innerHTML = this.workTimeMin;
+    }
+
+    renderSeconds() {
+        this.spanSecEl.innerHTML = this.workTimeSec.toString().padStart(2, '0');
+    }
+
     render() {
-        this.spanEl.innerHTML = 'Time: ' + this.workTime;
+        this.renderMinutes();
+        this.renderSeconds();
     }
 }
 
