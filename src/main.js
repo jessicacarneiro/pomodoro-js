@@ -1,8 +1,9 @@
 class App {
     constructor() {
         this.workTime = 25;
+        this.isTimerRunning = false;
 
-        this.delay = () => new Promise(resolve => setTimeout(resolve, 60*1000));
+        this.delay = () => new Promise(resolve => setTimeout(resolve, 1000));
 
         this.startButtonEl = document.getElementById('start-pomodoro');
         this.stopButtonEl = document.getElementById('stop-pomodoro');
@@ -34,7 +35,9 @@ class App {
         this.startButtonEl.style.display = 'none';
         this.stopButtonEl.style.display = 'inline-block';
 
-        while (this.workTime > 0) {
+        this.isTimerRunning = true;
+
+        while (this.workTime > 0 && this.isTimerRunning) {
             await this.delay();
             this.decreaseTime();
             this.render();
@@ -49,6 +52,8 @@ class App {
 
         this.stopButtonEl.style.display = 'none';
         this.startButtonEl.style.display = 'inline-block';
+
+        this.isTimerRunning = false;
     }
 
     render() {
