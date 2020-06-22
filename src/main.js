@@ -18,6 +18,17 @@ class App {
         this.stopButtonEl.onclick = event => this.stopTimer();
     }
 
+    toggleButton() {
+        if (this.startButtonEl.style.display === 'none') {
+            this.stopButtonEl.style.display = 'none';
+            this.startButtonEl.style.display = 'inline-block';
+        }
+        else {
+            this.startButtonEl.style.display = 'none';
+            this.stopButtonEl.style.display = 'inline-block';
+        }
+    }
+
     resetTimer() {
         this.workTime = 25;
         this.render();
@@ -43,17 +54,19 @@ class App {
             this.render();
         }
 
-        alert('Time is up!');
-        this.resetTimer();
+        if (this.workTime === 0) {
+            alert('Time is up!');
+            this.resetTimer();
+            this.toggleButton();
+        }
     }
 
     stopTimer() {
-        console.log('Stop timer!');
-
-        this.stopButtonEl.style.display = 'none';
-        this.startButtonEl.style.display = 'inline-block';
+        console.log('Stopping timer!');
 
         this.isTimerRunning = false;
+
+        this.toggleButton();
     }
 
     render() {
