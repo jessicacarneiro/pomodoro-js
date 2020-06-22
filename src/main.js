@@ -70,7 +70,7 @@ class App {
     }
 
     render() {
-        this.spanEl.innerHTML = this.workTime;
+        this.spanEl.innerHTML = 'Time: ' + this.workTime;
     }
 }
 
