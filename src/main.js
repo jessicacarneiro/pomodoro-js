@@ -1,10 +1,11 @@
+import { addMinutesToDate as addMinutes, subtractTimeInMs, subtractTime, padIntTwo } from './utils';
+
 class App {
     constructor() {
-        this.workTimeMin = 25;
-        this.workTimeSec = 0;
+        this.workTime = 25;
         this.isTimerRunning = false;
 
-        this.delay = () => new Promise(resolve => setTimeout(resolve, 996));
+        this.delay = () => new Promise(resolve => setTimeout(resolve, 500));
 
         this.startButtonEl = document.getElementById('start-pomodoro');
         this.stopButtonEl = document.getElementById('stop-pomodoro');
@@ -12,7 +13,7 @@ class App {
         this.spanSecEl = document.getElementById('time-left-sec');
 
         this.registerHandlers();
-        this.render();
+        this.render(this.workTime);
     }
 
     registerHandlers() {
@@ -32,29 +33,16 @@ class App {
     }
 
     resetTimer() {
-        this.workTimeMin = 25;
-        this.render();
+        this.render(this.workTime);
     }
 
-    timeIsUp() {
-        return this.workTimeMin === 0 && this.workTimeSec === 0;
+    timeIsUp(endTime) {
+        return subtractTimeInMs(new Date(), endTime) <= 0;
     }
 
-    decreaseTime() {
-        if (this.workTimeSec > 0) {
-            this.workTimeSec--;
-            this.renderSeconds();
-        }
-        else {
-            if (this.timeIsUp()) {
-                this.isTimerRunning = false;
-                return;
-            }
-
-            this.workTimeMin--;
-            this.workTimeSec = 59;
-            this.render();
-        }
+    decreaseTime(endTime) {
+        let [min, sec] = subtractTime(new Date(), endTime);
+        this.render(min, sec);
     }
 
     async startTimer() {
@@ -63,16 +51,17 @@ class App {
 
         this.isTimerRunning = true;
 
-        while (this.isTimerRunning) {
-            await this.delay();
-            this.decreaseTime();
-        }
+        let startTime = new Date();
+        let endTime = addMinutes(startTime, this.workTime);
 
-        if (this.workTimeMin === 0) {
-            alert('Time is up!');
-            this.resetTimer();
-            this.toggleButton();
+        while (this.isTimerRunning && !this.timeIsUp(endTime)) {
+            await this.delay();
+            this.decreaseTime(endTime);
         }
+        
+        alert('Time is up!');
+        this.resetTimer();
+        this.toggleButton();
     }
 
     stopTimer() {
@@ -80,17 +69,9 @@ class App {
         this.toggleButton();
     }
 
-    renderMinutes() {
-        this.spanMinEl.innerHTML = this.workTimeMin;
-    }
-
-    renderSeconds() {
-        this.spanSecEl.innerHTML = this.workTimeSec.toString().padStart(2, '0');
-    }
-
-    render() {
-        this.renderMinutes();
-        this.renderSeconds();
+    render(minLeft, secLeft = 0) {
+        this.spanMinEl.innerHTML = padIntTwo(minLeft);
+        this.spanSecEl.innerHTML = padIntTwo(secLeft);
     }
 }
 
