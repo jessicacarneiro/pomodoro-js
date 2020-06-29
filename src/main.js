@@ -2,7 +2,7 @@ import { addMinutesToDate as addMinutes, subtractTimeInMs, subtractTime, padIntT
 
 class App {
     constructor() {
-        this.workTime = 1;
+        this.workTime = 25;
         this.isTimerRunning = false;
         this.totalPomodoros = 0;
 
