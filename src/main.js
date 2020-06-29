@@ -2,7 +2,7 @@ import { addMinutesToDate as addMinutes, subtractTimeInMs, subtractTime, padIntT
 
 class App {
     constructor() {
-        this.workTime = 25;
+        this.workTime = 1;
         this.isTimerRunning = false;
         this.totalPomodoros = 0;
 
@@ -36,6 +36,7 @@ class App {
 
     resetTimer() {
         this.isTimerRunning = false;
+        this.toggleButton();
         this.render(this.workTime);
     }
 
@@ -68,12 +69,10 @@ class App {
 
         alert('Time is up!');
         this.resetTimer();
-        this.toggleButton();
     }
 
     stopTimer() {
         this.isTimerRunning = false;
-        this.toggleButton();
     }
 
     render(minLeft, secLeft = 0) {
