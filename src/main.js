@@ -4,6 +4,7 @@ class App {
     constructor() {
         this.workTime = 25;
         this.isTimerRunning = false;
+        this.totalPomodoros = 0;
 
         this.delay = () => new Promise(resolve => setTimeout(resolve, 500));
 
@@ -11,6 +12,7 @@ class App {
         this.stopButtonEl = document.getElementById('stop-pomodoro');
         this.spanMinEl = document.getElementById('time-left-min');
         this.spanSecEl = document.getElementById('time-left-sec');
+        this.spanTotalEl = document.getElementById('total-pomodoros');
 
         this.registerHandlers();
         this.render(this.workTime);
@@ -33,6 +35,7 @@ class App {
     }
 
     resetTimer() {
+        this.isTimerRunning = false;
         this.render(this.workTime);
     }
 
@@ -58,7 +61,11 @@ class App {
             await this.delay();
             this.decreaseTime(endTime);
         }
-        
+
+        if (this.isTimerRunning) {
+            this.totalPomodoros++;
+        }
+
         alert('Time is up!');
         this.resetTimer();
         this.toggleButton();
@@ -72,6 +79,7 @@ class App {
     render(minLeft, secLeft = 0) {
         this.spanMinEl.innerHTML = padIntTwo(minLeft);
         this.spanSecEl.innerHTML = padIntTwo(secLeft);
+        this.spanTotalEl.innerHTML = this.totalPomodoros;
     }
 }
 

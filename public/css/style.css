@@ -17,3 +17,8 @@ button {
 #stop-pomodoro {
     display: none;
 }
+
+#total {
+    font-size: 18px;
+    color: darkslategrey;
+}
