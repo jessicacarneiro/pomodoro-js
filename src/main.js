@@ -3,6 +3,11 @@ import { addMinutesToDate as addMinutes, subtractTimeInMs, subtractTime, padIntT
 class App {
     constructor() {
         this.workTime = 25;
+        this.timeLeft = {
+            minutes: this.workTime,
+            seconds: 0
+        }
+
         this.isTimerRunning = false;
         this.totalPomodoros = 0;
 
@@ -15,7 +20,7 @@ class App {
         this.spanTotalEl = document.getElementById('total-pomodoros');
 
         this.registerHandlers();
-        this.render(this.workTime);
+        this.render();
     }
 
     registerHandlers() {
@@ -37,7 +42,7 @@ class App {
     resetTimer() {
         this.isTimerRunning = false;
         this.toggleButton();
-        this.render(this.workTime);
+        this.render();
     }
 
     timeIsUp(endTime) {
@@ -45,8 +50,12 @@ class App {
     }
 
     decreaseTime(endTime) {
-        let [min, sec] = subtractTime(new Date(), endTime);
-        this.render(min, sec);
+        let [minutes, seconds] = subtractTime(new Date(), endTime);
+        this.timeLeft = {
+            minutes,
+            seconds
+        };
+        this.render();
     }
 
     async startTimer() {
@@ -56,7 +65,7 @@ class App {
         this.isTimerRunning = true;
 
         let startTime = new Date();
-        let endTime = addMinutes(startTime, this.workTime);
+        let endTime = addMinutes(startTime, this.timeLeft.minutes, this.timeLeft.seconds);
 
         while (this.isTimerRunning && !this.timeIsUp(endTime)) {
             await this.delay();
@@ -65,19 +74,21 @@ class App {
 
         if (this.isTimerRunning) {
             this.totalPomodoros++;
+            alert('Time is up!');
+            this.resetTimer();
         }
-
-        alert('Time is up!');
-        this.resetTimer();
+        else {
+            this.toggleButton();
+        }
     }
 
     stopTimer() {
         this.isTimerRunning = false;
     }
 
-    render(minLeft, secLeft = 0) {
-        this.spanMinEl.innerHTML = padIntTwo(minLeft);
-        this.spanSecEl.innerHTML = padIntTwo(secLeft);
+    render() {
+        this.spanMinEl.innerHTML = padIntTwo(this.timeLeft.minutes);
+        this.spanSecEl.innerHTML = padIntTwo(this.timeLeft.seconds);
         this.spanTotalEl.innerHTML = this.totalPomodoros;
     }
 }

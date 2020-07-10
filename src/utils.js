@@ -1,6 +1,6 @@
-const addMinutesToDate = (date, minutes) => {
-    return new Date(date.getTime() + minutes*60000);
-}; 
+const addMinutesToDate = (date, minutes, seconds=0) => {
+    return new Date(date.getTime() + minutes*60000 + seconds*1000);
+};
 
 const subtractTimeInMs = (oldDate, newDate) => {
     return newDate.getTime() - oldDate.getTime();
@@ -17,4 +17,4 @@ const padIntTwo = (field) => {
     return field.toString().padStart(2, '0');
 }
 
-export { addMinutesToDate, subtractTimeInMs, subtractTime, padIntTwo };
+module.exports = { addMinutesToDate, subtractTimeInMs, subtractTime, padIntTwo };
